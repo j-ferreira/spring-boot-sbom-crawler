@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: spring-boot-sbom-crawler
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,sbom
+  server:
+    port: 8091
+server:
+  port: 8090
+
+crawler:
+  configurations:
+    - id: demo-application
+      endpoint: http://localhost:8091/actuator/sbom
