@@ -11,6 +11,12 @@ management:
 server:
   port: 8090
 
+feign:
+  client:
+    config:
+      dependency-track:
+        url: https://localhost:8081
+
 crawler:
   configurations:
     - id: demo-application
