@@ -10,5 +10,11 @@ public class ConfigurationEntry {
     String id;
     @NonNull
     String endpoint;
+    @NonNull
+    String projectName;
+    @NonNull
+    String projectVersion;
+    @NonNull
+    String projectId;
 
 }

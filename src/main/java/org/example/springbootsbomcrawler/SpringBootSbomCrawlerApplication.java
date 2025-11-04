@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableConfigurationProperties(CrawlerConfiguration.class)
-@EnableFeignClients(basePackages = "org.example.springbootsbomcrawler.client")
+@EnableFeignClients(basePackages = "org.example.springbootsbomcrawler")
 public class SpringBootSbomCrawlerApplication {
 
     public static void main(String[] args) {

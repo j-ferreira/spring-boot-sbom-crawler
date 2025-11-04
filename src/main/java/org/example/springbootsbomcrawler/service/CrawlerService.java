@@ -1,9 +1,12 @@
 package org.example.springbootsbomcrawler.service;
 
+import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.springbootsbomcrawler.config.CrawlerConfiguration;
 import org.example.springbootsbomcrawler.feign.GenericFeignClient;
+import org.example.springbootsbomcrawler.feign.dependencytrack.BomSubmitRequest;
+import org.example.springbootsbomcrawler.feign.dependencytrack.DependencyTrackFeignClient;
 import org.example.springbootsbomcrawler.model.SbomIndexList;
 import org.springframework.cloud.openfeign.FeignClientBuilder;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ public class CrawlerService {
 
 
     final FeignClientBuilder feignClientBuilder;
+
+    final DependencyTrackFeignClient dependencyTrackFeignClient;
 
     public void startCrawler() {
 
@@ -41,10 +46,23 @@ public class CrawlerService {
                     .url(crawler.getEndpoint() + "/" + id)
                     .build();
 
-                String fromEndpoint = sbomContentClient.getFromEndpoint();
+                String bom = sbomContentClient.getFromEndpoint();
 
-                log.info("Response von {}: {}", crawler.getEndpoint() + "/" + id, fromEndpoint);
+                log.info("Response von {}: {}", crawler.getEndpoint() + "/" + id, bom);
 
+                BomSubmitRequest request = BomSubmitRequest.builder()
+                    .bom(Base64.getEncoder().encodeToString(bom.getBytes()))
+                    .project(crawler.getProjectId())
+                    .projectName(crawler.getProjectName())
+                    .projectVersion(crawler.getProjectVersion())
+                    .build();
+
+                String s = dependencyTrackFeignClient.putBom(request, "Bearer ADD TOKEN HERE");
+                log.info("Response von bom endpoint  {}", s);
+
+                String token = dependencyTrackFeignClient.startAnalyse(crawler.getProjectId(), "Bearer ADD TOKEN HERE");
+
+                log.info("Response von bom endpoint  {}", token);
             });
 
 

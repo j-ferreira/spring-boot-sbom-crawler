@@ -21,3 +21,8 @@ crawler:
   configurations:
     - id: demo-application
       endpoint: http://localhost:8091/actuator/sbom
+      projectId: ffe51202-3285-4f79-8df6-9a7656aa709b
+      projectName: spring-boot-sbom-crawler
+      projectVersion: PROD
+
+
