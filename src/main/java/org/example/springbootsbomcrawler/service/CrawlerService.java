@@ -56,13 +56,15 @@ public class CrawlerService {
                     .projectName(crawler.getProjectName())
                     .projectVersion(crawler.getProjectVersion())
                     .build();
+                String bearer = "Bearer Add Token here";
+                String s = dependencyTrackFeignClient.putBom(request, bearer);
+                log.info("Response von put endpoint  {}", s);
 
-                String s = dependencyTrackFeignClient.putBom(request, "Bearer ADD TOKEN HERE");
-                log.info("Response von bom endpoint  {}", s);
+                String token = dependencyTrackFeignClient.startAnalyse(crawler.getProjectId(), bearer);
+                log.info("Response von analyse endpoint  {}", token);
 
-                String token = dependencyTrackFeignClient.startAnalyse(crawler.getProjectId(), "Bearer ADD TOKEN HERE");
-
-                log.info("Response von bom endpoint  {}", token);
+                String findings = dependencyTrackFeignClient.getFindings(crawler.getProjectId(), bearer, true);
+                log.info("Response von findings endpoint  {}", findings);
             });
 
 
